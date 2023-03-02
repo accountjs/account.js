@@ -79,6 +79,15 @@ class Runner {
     return this
   }
 
+  async transferETH (target: string, ether: string): Promise<void> {
+    await this.aaProvider.getSigner().sendTransaction({
+      to: target,
+      data: '0x',
+      value: parseEther(ether),
+      gasLimit: 100000
+    })
+  }
+
   async transferWeth (target: string, ether: string): Promise<void> {
     const wethAA = WETH__factory.connect(WETH, this.aaProvider.getSigner())
     await wethAA.transfer(target, parseEther(ether))
@@ -170,6 +179,7 @@ async function main (): Promise<void> {
   const index = Date.now()
   const client = await new Runner(provider, opts.bundlerUrl, accountOwner, opts.entryPoint, index).init(deployFactory ? signer : undefined)
   const addr = await client.getAddress()
+
   // transfer 1 weth to addr
   await weth.transfer(addr, parseEther('1'))
 
@@ -178,28 +188,39 @@ async function main (): Promise<void> {
   }
 
   async function getBalance (addr: string): Promise<BigNumber> {
-    // return await provider.getBalance(addr)
+    return await provider.getBalance(addr)
+    // return await weth.balanceOf(addr)
+  }
+  async function getWethBalance (addr: string): Promise<BigNumber> {
     return await weth.balanceOf(addr)
   }
 
   const bal = await getBalance(addr)
-  console.log('account address', addr, 'deployed=', await isDeployed(addr), 'bal=', formatEther(bal))
+  const wbal = await getWethBalance(addr)
+  const requiredBalance = parseEther('0.5')
+  console.log('funding account to', requiredBalance)
+  await signer.sendTransaction({
+    to: addr,
+    value: requiredBalance.sub(bal)
+  })
+  console.log('account address', addr, 'deployed=', await isDeployed(addr), 'bal=', formatEther(bal), 'weth=', formatEther(wbal))
   const ownerAddr = await accountOwner.getAddress()
   let ownerBal = await weth.balanceOf(ownerAddr)
   console.log('owner', ownerAddr, 'bal=', formatEther(ownerBal))
 
   const dest = addr
-  await client.transferWeth(ownerAddr, '0.2')
+  await client.transferETH(ownerAddr, '0.2')
   console.log('after run1')
 
   await Sleep(5000)
 
   const bal1 = await getBalance(dest)
-  console.log('account address', addr, 'deployed=', await isDeployed(addr), 'bal=', formatEther(bal1))
+  const wbal1 = await getWethBalance(addr)
+  console.log('account address', addr, 'deployed=', await isDeployed(addr), 'bal=', formatEther(bal1), 'weth=', formatEther(wbal1))
   ownerBal = await weth.balanceOf(ownerAddr)
   console.log('owner', ownerAddr, 'bal=', formatEther(ownerBal))
 
-  await client.transferWeth(ownerAddr, '0.2')
+  await client.transferETH(ownerAddr, '0.2')
   console.log('after run2')
   await Sleep(5000)
 

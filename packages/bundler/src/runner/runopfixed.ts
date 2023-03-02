@@ -20,7 +20,7 @@ import { parseExpectedGas, Sleep } from './utils'
 const ENTRY_POINT = '0x0576a174d229e3cfa37253523e645a78a0c91b57'
 const ACCTOK_FACTORY = '0xf25dc911d2c89559aeef1a49e36582f9cb305397'
 const ERC20 = '0x0f7a41bc01b661847d07077168c439abff37db8d'
-const FIXED_PAYMASTER = '0x610178dA211FEF7D417bC0e6FeD39F05609AD788'
+const FIXED_PAYMASTER = '0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e'
 const beneficiary = '0xd21934eD8eAf27a67f0A70042Af50A1D6d195E81'
 class Runner {
   bundlerProvider!: HttpRpcClient

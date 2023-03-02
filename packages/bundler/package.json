@@ -8,11 +8,11 @@
     "README.md"
   ],
   "scripts": {
-    "runop": "ts-node ./src/runner/runop.ts",
+    "runop": "ts-node ./src/runner/runopro.ts",
     "runopweth": "ts-node ./src/runner/runopweth.ts",
     "runopusdt": "ts-node ./src/runner/runopusdt.ts",
     "runopfixed": "ts-node ./src/runner/runopfixed.ts",
-    "runopgasless": "ts-node ./src/runner/runopgasless.ts",
+    "runopgasless": "ts-node ./src/runner/runopverifying.ts",
     "bundler": "ts-node ./src/exec.ts --config ./localconfig/bundler.config.json",
     "clear": "rm -rf dist artifacts cache src/types",
     "hardhat-compile": "hardhat compile",

@@ -263,19 +263,23 @@ export abstract class BaseAccountAPI {
       paymasterAndData: '0x'
     }
 
-    let paymasterAndData: string | undefined
+    // let paymasterAndData: string | undefined
+    partialUserOp.preVerificationGas = await this.getPreVerificationGas(partialUserOp)
+    console.log('preVerificationGas', partialUserOp.preVerificationGas)
     if (this.paymasterAPI != null) {
       // fill (partial) preVerificationGas (all except the cost of the generated paymasterAndData)
-      const userOpForPm = {
-        ...partialUserOp,
-        preVerificationGas: await this.getPreVerificationGas(partialUserOp)
-      }
-      paymasterAndData = await this.paymasterAPI.getPaymasterAndData(userOpForPm)
+      // const userOpForPm = {
+      //   ...partialUserOp,
+      //   preVerificationGas: await this.getPreVerificationGas(partialUserOp)
+      // }
+      partialUserOp.paymasterAndData = await this.paymasterAPI.getPaymasterAndData(partialUserOp)
     }
-    partialUserOp.paymasterAndData = paymasterAndData ?? '0x'
+    // partialUserOp.paymasterAndData = paymasterAndData ?? '0x'
+    console.log('preVerificationGas', partialUserOp.preVerificationGas)
+
     return {
       ...partialUserOp,
-      preVerificationGas: this.getPreVerificationGas(partialUserOp),
+      // preVerificationGas: this.getPreVerificationGas(partialUserOp), // you cannot change cus paymaster signature
       signature: ''
     }
   }

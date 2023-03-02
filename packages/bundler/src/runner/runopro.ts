@@ -14,7 +14,7 @@ import { erc4337RuntimeVersion } from '@accountjs/utils'
 import { ERC4337EthersProvider, ClientConfig, wrapProvider } from '@accountjs/sdk'
 import { runBundler } from '../runBundler'
 import { BundlerServer } from '../BundlerServer'
-import { parseExpectedGas } from './utils'
+import { parseExpectedGas, Sleep } from './utils'
 
 const ENTRY_POINT = '0x0576a174d229e3cfa37253523e645a78a0c91b57'
 
@@ -147,6 +147,7 @@ async function main (): Promise<void> {
   console.log('account address', addr, 'deployed=', await isDeployed(addr), 'bal=', formatEther(bal1))
   ownerBal = await getBalance(ownerAddr)
   console.log('owner', ownerAddr, 'bal=', formatEther(ownerBal))
+  await Sleep(5000)
   // client.accountApi.overheads!.perUserOp = 30000
   await client.transferETH(ownerAddr, '0.1')
   console.log('after run2')

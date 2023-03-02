@@ -10,8 +10,7 @@ import { JsonRpcProvider } from '@ethersproject/providers'
 import { formatEther, keccak256, parseEther } from 'ethers/lib/utils'
 import { Command } from 'commander'
 import { erc4337RuntimeVersion, rethrowError } from '@accountjs/utils'
-import { GaslessPaymaster__factory } from '../../src/types'
-import { EntryPoint__factory } from '@account-abstraction/contracts'
+import { EntryPoint__factory, VerifyingPaymaster__factory } from '@account-abstraction/contracts'
 import { HttpRpcClient, SimpleAccountAPI, VerifiedPaymasterAPI } from '@accountjs/sdk'
 import { runBundler } from '../runBundler'
 import { BundlerServer } from '../BundlerServer'
@@ -176,7 +175,7 @@ async function main (): Promise<void> {
   const eth0 = await signer.getBalance()
   console.log('eth0=', formatEther(eth0))
 
-  const paymaster = GaslessPaymaster__factory.connect(GASLESS_PAYMASTER, signer)
+  const paymaster = VerifyingPaymaster__factory.connect(GASLESS_PAYMASTER, signer)
   // paymaster deposit 1 eth
   console.log('paymaster owner:', await paymaster.owner())
   console.log('paymaster signer:', await paymaster.verifyingSigner())

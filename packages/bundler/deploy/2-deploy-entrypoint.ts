@@ -7,7 +7,7 @@ import {
   EntryPoint__factory, SimpleAccountFactory__factory, SimpleAccountForTokensFactory__factory, VerifyingPaymaster__factory
 } from '@accountjs/contracts'
 import {
-  WETH__factory, USDToken__factory, Token__factory,
+  WETH__factory, USDToken__factory, Token__factory, GaslessPaymaster__factory,
   WETHPaymaster__factory, USDPaymaster__factory, FixedPaymaster__factory
 } from '../src/types'
 
@@ -55,7 +55,11 @@ const deployEP: DeployFunction = async function (hre: HardhatRuntimeEnvironment)
   const usdPaymaster = await new USDPaymaster__factory(ethers.provider.getSigner()).deploy(acctokFactory, epAddr, usdAddr.address, usdAddr.address)
   console.log('Deployed USDPaymaster at', usdPaymaster.address)
 
-  // 3. gasless (verified) paymaster
+  // 3. gasless paymaster
+  const gaslessPaymaster = await new GaslessPaymaster__factory(ethers.provider.getSigner()).deploy(epAddr, ethers.provider.getSigner().getAddress())
+  console.log('Deployed GaslessPaymaster at', gaslessPaymaster.address)
+
+  // 3. verified paymaster
   const verifiedPaymaster = await new VerifyingPaymaster__factory(ethers.provider.getSigner()).deploy(epAddr, ethers.provider.getSigner().getAddress())
   console.log('Deployed VerifiedPaymaster at', verifiedPaymaster.address)
 

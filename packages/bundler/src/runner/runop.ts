@@ -184,6 +184,7 @@ async function main (): Promise<void> {
   const data = keccak256(Buffer.from('nonce()')).slice(0, 10)
   console.log('data=', data)
   await client.runUserOp(dest, data)
+  console.log('account address', addr, 'deployed=', await isDeployed(addr), 'bal=', formatEther(bal))
   console.log('after run1')
   // client.accountApi.overheads!.perUserOp = 30000
   await client.runUserOp(dest, data)
