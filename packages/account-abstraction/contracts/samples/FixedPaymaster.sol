@@ -4,8 +4,8 @@ pragma solidity ^0.8.12;
 /* solhint-disable reason-string */
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@account-abstraction/contracts/samples/SimpleAccount.sol";
-import "@account-abstraction/contracts/core/BasePaymaster.sol";
+import "./SimpleAccount.sol";
+import "../core/BasePaymaster.sol";
 
 /**
  * A sample paymaster that define itself as a token to pay for gas.

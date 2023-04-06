@@ -1,6 +1,6 @@
 {
   "name": "@accountjs/utils",
-  "version": "0.2.0",
+  "version": "0.1.1",
   "scripts": {
     "clear": "rm -rf dist artifacts cache src/types",
     "hardhat-compile": "hardhat compile",
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@account-abstraction/contracts": "^0.5.0",
-    "@accountjs/contracts": "workspace:*",
+    "@accountjs/contracts": "^0.1.1",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
     "@openzeppelin/contracts": "^4.8.1",

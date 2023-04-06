@@ -4,23 +4,36 @@ pragma solidity ^0.8.12;
 /* solhint-disable reason-string */
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@account-abstraction/contracts/samples/SimpleAccount.sol";
-import "@account-abstraction/contracts/core/BasePaymaster.sol";
+import "./SimpleAccount.sol";
+import "./oracle/IOracle.sol";
+import "../core/BasePaymaster.sol";
 
 /**
- * paymaster that accepts WETH.
+ * A sample paymaster that define itself as a token to pay for gas.
+ * The paymaster IS the token to use, since a paymaster cannot use an external contract.
+ * Also, the exchange rate has to be fixed, since it can't reference an external Uniswap or other exchange contract.
+ * subclass should override "getTokenValueOfEth to provide actual token exchange rate, settable by the owner.
+ * Known Limitation: this paymaster is exploitable when put into a batch with multiple ops (of different accounts):
+ * - while a single op can't exploit the paymaster (if postOp fails to withdraw the tokens, the user's op is reverted,
+ *   and then we know we can withdraw the tokens), multiple ops with different senders (all using this paymaster)
+ *   in a batch can withdraw funds from 2nd and further ops, forcing the paymaster itself to pay (from its deposit)
+ * - Possible workarounds are either use a more complex paymaster scheme (e.g. the DepositPaymaster) or
+ *   to whitelist the account and the called method ids.
  */
-contract WETHPaymaster is BasePaymaster {
+contract USDPaymaster is BasePaymaster {
 
     //calculated cost of the postOp
     uint256 constant public COST_OF_POST = 15000;
 
     address public immutable theFactory;
-    IERC20 public wethToken;
+    IERC20 public usdToken;
+    IOracle public oracle;
 
-    constructor(address accountFactory, IEntryPoint _entryPoint, IERC20 _wethToken) BasePaymaster(_entryPoint) {
+
+    constructor(address accountFactory, IEntryPoint _entryPoint, IERC20 _usdToken, IOracle _oracle) BasePaymaster(_entryPoint) {
         theFactory = accountFactory;
-        wethToken = _wethToken;
+        usdToken = _usdToken;
+        oracle = _oracle;
     }
 
     /**
@@ -41,18 +54,18 @@ contract WETHPaymaster is BasePaymaster {
       */
     function _validatePaymasterUserOp(UserOperation calldata userOp, bytes32 /*userOpHash*/, uint256 requiredPreFund)
     internal view override returns (bytes memory context, uint256 deadline) {
-        uint256 tokenPrefund = requiredPreFund;
+        uint256 tokenPrefund = oracle.getTokenValueOfEth(requiredPreFund);
 
         // verificationGasLimit is dual-purposed, as gas limit for postOp. make sure it is high enough
         // make sure that verificationGasLimit is high enough to handle postOp
-        require(userOp.verificationGasLimit > COST_OF_POST, "WETHPaymaster: gas too low for postOp");
+        require(userOp.verificationGasLimit > COST_OF_POST, "USDPaymaster: gas too low for postOp");
 
         if (userOp.initCode.length != 0) {
             _validateConstructor(userOp);
-            require(wethToken.balanceOf(userOp.sender) >= tokenPrefund, "WETHPaymaster: no balance (pre-create)");
+            require(usdToken.balanceOf(userOp.sender) >= tokenPrefund, "USDPaymaster: no balance (pre-create)");
         } else {
-            require(wethToken.balanceOf(userOp.sender) >= tokenPrefund, "WETHPaymaster: no balance");
-            require(wethToken.allowance(userOp.sender, address(this)) >= tokenPrefund, "WETHPaymaster: no allowance");
+            require(usdToken.balanceOf(userOp.sender) >= tokenPrefund, "USDPaymaster: no balance");
+            require(usdToken.allowance(userOp.sender, address(this)) >= tokenPrefund, "USDPaymaster: no allowance");
         }
 
         return (abi.encode(userOp.sender), 0);
@@ -62,7 +75,7 @@ contract WETHPaymaster is BasePaymaster {
     // we trust our factory (and that it doesn't have any other public methods)
     function _validateConstructor(UserOperation calldata userOp) internal virtual view {
         address factory = address(bytes20(userOp.initCode[0 : 20]));
-        require(factory == theFactory, "WETHPaymaster: wrong account factory");
+        require(factory == theFactory, "USDPaymaster: wrong account factory");
 
         // TODO: check constructor parameters
     }
@@ -78,6 +91,9 @@ contract WETHPaymaster is BasePaymaster {
         //we don't really care about the mode, we just pay the gas with the user's tokens.
         (mode);
         address sender = abi.decode(context, (address));
-        wethToken.transferFrom(sender, address(this), actualGasCost + COST_OF_POST);
+        uint256 charge = oracle.getTokenValueOfEth(actualGasCost + COST_OF_POST);
+        //actualGasCost is known to be no larger than the above requiredPreFund, so the transfer should succeed.
+        usdToken.transferFrom(sender, address(this), charge);
+
     }
 }
