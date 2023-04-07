@@ -4,12 +4,10 @@ import { DeployFunction } from 'hardhat-deploy/types'
 import { ethers } from 'hardhat'
 import { DeterministicDeployer } from '@accountjs/sdk'
 import {
-  EntryPoint__factory, SimpleAccountFactory__factory, SimpleAccountForTokensFactory__factory, VerifyingPaymaster__factory
-} from '@accountjs/contracts'
-import {
+  EntryPoint__factory, SimpleAccountFactory__factory, SimpleAccountForTokensFactory__factory, VerifyingPaymaster__factory,
   WETH__factory, USDToken__factory, Token__factory, GaslessPaymaster__factory,
   WETHPaymaster__factory, USDPaymaster__factory, FixedPaymaster__factory
-} from '../src/types'
+} from '@accountjs/contracts'
 
 // deploy entrypoint - but only on debug network..
 const deployEP: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {

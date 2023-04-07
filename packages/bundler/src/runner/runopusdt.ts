@@ -11,7 +11,7 @@ import { formatEther, formatUnits, keccak256, parseEther, parseUnits } from 'eth
 import { Command } from 'commander'
 import { erc4337RuntimeVersion } from '@accountjs/utils'
 import { EntryPoint__factory } from '@account-abstraction/contracts'
-import { USDToken__factory, USDPaymaster__factory } from '../../src/types'
+import { USDToken__factory, USDPaymaster__factory } from '@accountjs/contracts'
 import { HttpRpcClient, SimpleAccountForTokensAPI, TokenPaymasterAPI } from '@accountjs/sdk'
 import { runBundler } from '../runBundler'
 import { BundlerServer } from '../BundlerServer'
