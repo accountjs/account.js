@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 
-import "./core/BaseAccount.sol";
+import "../core/BaseAccount.sol";
 import "./GuardianStorage.sol";
 
 /**
