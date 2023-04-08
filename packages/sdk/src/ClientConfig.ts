@@ -17,11 +17,11 @@ export interface ClientConfig {
    * (if not set, use getSigner().getAddress() to query the "counterfactual" address of wallet.
    *  you may need to fund this address so the wallet can pay for its own creation)
    */
-  walletAddres?: string
+  walletAddress?: string
   /**
    * if set, use this pre-deployed factory.
    */
-  accountFacotry?: string
+  accountFactory?: string
   /**
    * if set, call just before signing.
    */

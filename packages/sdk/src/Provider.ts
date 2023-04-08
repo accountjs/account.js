@@ -60,7 +60,7 @@ export async function wrapSimpleProvider (
     provider: originalProvider,
     entryPointAddress: entryPoint.address,
     owner: originalSigner,
-    factoryAddress: config.accountFacotry,
+    factoryAddress: config.accountFactory,
     paymasterAPI: config.paymasterAPI
   })
   debug('config=', config)
@@ -90,7 +90,7 @@ export async function wrapPaymasterProvider (
     owner: originalSigner,
     token,
     paymaster,
-    factoryAddress: config.accountFacotry,
+    factoryAddress: config.accountFactory,
     paymasterAPI: config.paymasterAPI
   })
   debug('config=', config)
@@ -121,8 +121,9 @@ export async function wrapPrivateGuardianProvider (
     owner: originalSigner,
     token,
     paymaster,
-    factoryAddress: config.accountFacotry,
-    paymasterAPI: config.paymasterAPI
+    accountAddress: config.walletAddress, //
+    factoryAddress: config.accountFactory, //
+    paymasterAPI: config.paymasterAPI //
   })
   debug('config=', config)
   const chainId = await originalProvider.getNetwork().then(net => net.chainId)
