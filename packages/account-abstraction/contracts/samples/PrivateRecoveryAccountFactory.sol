@@ -31,7 +31,7 @@ contract PrivateRecoveryAccountFactory {
         address paymaster,
         uint256 salt
     ) public returns (PrivateRecoveryAccount ret) {
-        address addr = getAddress(owner, salt);
+        address addr = getAddress(owner, token, paymaster, salt);
         uint codeSize = addr.code.length;
         if (codeSize > 0) {
             return PrivateRecoveryAccount(payable(addr));
@@ -51,11 +51,13 @@ contract PrivateRecoveryAccountFactory {
      */
     function getAddress(
         address owner,
+        address token,
+        address paymaster,
         uint256 salt
     ) public view returns (address) {
         bytes memory encodedCall = abi.encodeCall(
             PrivateRecoveryAccount.initialize,
-            (owner)
+            (owner, token, paymaster)
         );
         bytes memory encodedAbi = abi.encode(
             address(accountImplementation),
