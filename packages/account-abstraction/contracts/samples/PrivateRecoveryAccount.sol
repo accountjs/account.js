@@ -8,6 +8,7 @@ pragma solidity ^0.8.12;
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import "../core/BaseAccount.sol";
 import "./GuardianStorage.sol";
@@ -88,8 +89,11 @@ contract PrivateRecoveryAccount is BaseAccount, UUPSUpgradeable, Initializable {
      * a new implementation of PrivateRecoveryAccount must be deployed with the new EntryPoint address, then upgrading
       * the implementation by calling `upgradeTo()`
      */
-    function initialize(address anOwner) public virtual initializer {
+    function initialize(address anOwner, address token, address paymaster) public virtual initializer {
         _initialize(anOwner);
+        if (token != address(0)) {
+            IERC20(token).approve(paymaster, type(uint256).max);
+        }
     }
 
     function _initialize(address anOwner) internal virtual {

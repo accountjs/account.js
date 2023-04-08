@@ -27,6 +27,8 @@ contract PrivateRecoveryAccountFactory {
      */
     function createAccount(
         address owner,
+        address token,
+        address paymaster,
         uint256 salt
     ) public returns (PrivateRecoveryAccount ret) {
         address addr = getAddress(owner, salt);
@@ -38,7 +40,7 @@ contract PrivateRecoveryAccountFactory {
             payable(
                 new ERC1967Proxy{salt: bytes32(salt)}(
                     address(accountImplementation),
-                    abi.encodeCall(PrivateRecoveryAccount.initialize, (owner))
+                    abi.encodeCall(PrivateRecoveryAccount.initialize, (owner, token, paymaster))
                 )
             )
         );
