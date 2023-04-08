@@ -4,9 +4,9 @@ import { DeployFunction } from 'hardhat-deploy/types'
 import { ethers } from 'hardhat'
 import { DeterministicDeployer } from '@accountjs/sdk'
 import {
-  EntryPoint__factory, SimpleAccountFactory__factory, SimpleAccountForTokensFactory__factory, VerifyingPaymaster__factory,
-  WETH__factory, USDToken__factory, Token__factory, GaslessPaymaster__factory,
-  WETHPaymaster__factory, USDPaymaster__factory, FixedPaymaster__factory
+  EntryPoint__factory, SimpleAccountFactory__factory, SimpleAccountForTokensFactory__factory, PrivateRecoveryAccountFactory__factory,
+  WETH__factory, USDToken__factory, Token__factory, GaslessPaymaster__factory, VerifyingPaymaster__factory,
+  WETHPaymaster__factory, USDPaymaster__factory, FixedPaymaster__factory, UpdateGuardianVerifier__factory, SocialRecoveryVerifier__factory
 } from '@accountjs/contracts'
 
 // deploy entrypoint - but only on debug network..
@@ -37,11 +37,11 @@ const deployEP: DeployFunction = async function (hre: HardhatRuntimeEnvironment)
   console.log('Deployed SimpleAccountForTokensFactory at', acctokFactory)
 
   // deploy weth
-  const wethAddr = await dep.deterministicDeploy(WETH__factory.bytecode)
+  const wethAddr = await new WETH__factory(ethers.provider.getSigner()).deploy()
   console.log('Deployed WETH at', wethAddr)
 
   // 1. deploy weth paymaster
-  const wethPaymaster = await new WETHPaymaster__factory(ethers.provider.getSigner()).deploy(acctokFactory, epAddr, wethAddr)
+  const wethPaymaster = await new WETHPaymaster__factory(ethers.provider.getSigner()).deploy(acctokFactory, epAddr, wethAddr.address)
   console.log('Deployed WETHPaymaster at', wethPaymaster.address)
 
   // deploy usd and oracle
@@ -62,12 +62,22 @@ const deployEP: DeployFunction = async function (hre: HardhatRuntimeEnvironment)
   console.log('Deployed VerifiedPaymaster at', verifiedPaymaster.address)
 
   // deploy erc20
-  const tokenAddr = await dep.deterministicDeploy(new Token__factory(), 0, ['TestToken', 'TT'])
+  // const tokenAddr = await dep.deterministicDeploy(new Token__factory(), 0, ['TestToken', 'TT'])
+  const tokenAddr = await new Token__factory(ethers.provider.getSigner()).deploy('TestToken', 'TT')
   console.log('Deployed custom Token at', tokenAddr)
 
   // 4. fixed create and tx fee paymaster
-  const fixedPaymaster = await new FixedPaymaster__factory(ethers.provider.getSigner()).deploy(acctokFactory, epAddr, tokenAddr, parseEther('1'), parseEther('10'))
+  const fixedPaymaster = await new FixedPaymaster__factory(ethers.provider.getSigner()).deploy(acctokFactory, epAddr, tokenAddr.address, parseEther('1'), parseEther('10'))
   console.log('Deployed FixedPaymaster at', fixedPaymaster.address)
+
+  const updateGuardianVerifier = await new UpdateGuardianVerifier__factory(ethers.provider.getSigner()).deploy()
+  console.log('deploy update Guardian verifier in', updateGuardianVerifier.address)
+
+  const socialRecoveryVerifier = await new SocialRecoveryVerifier__factory(ethers.provider.getSigner()).deploy()
+  console.log('deploy update Guardian verifier in', socialRecoveryVerifier.address)
+
+  const privateRecoveryAccountFactory = await new PrivateRecoveryAccountFactory__factory(guardianStorageLib.address, ethers.provider.getSigner()).deploy(epAddr, socialRecoveryVerifier.address)
+
 }
 
 export default deployEP
