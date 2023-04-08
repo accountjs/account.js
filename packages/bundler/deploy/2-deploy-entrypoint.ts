@@ -38,21 +38,29 @@ const deployEP: DeployFunction = async function (hre: HardhatRuntimeEnvironment)
   console.log('Deployed SimpleAccountForTokensFactory at', acctokFactory)
 
   // deploy weth
-  const wethAddr = await new WETH__factory(ethers.provider.getSigner()).deploy()
-  console.log('Deployed WETH at', wethAddr.address)
+  // const wethAddr = await new WETH__factory(ethers.provider.getSigner()).deploy()
+  const wethAddr = await dep.deterministicDeploy(WETH__factory.bytecode)
+  console.log('Deployed WETH at', wethAddr)
 
   // 1. deploy weth paymaster
-  const wethPaymaster = await new WETHPaymaster__factory(ethers.provider.getSigner()).deploy(acctokFactory, epAddr, wethAddr.address)
+  const wethPaymaster = await new WETHPaymaster__factory(ethers.provider.getSigner()).deploy(acctokFactory, epAddr, wethAddr)
   console.log('Deployed WETHPaymaster at', wethPaymaster.address)
 
   // deploy usd and oracle
-  // const usdAddr = await dep.deterministicDeploy(new USDToken__factory(), 0, [BigNumber.from('100000000000000000000000000')])
   const usdAddr = await new USDToken__factory(ethers.provider.getSigner()).deploy(parseUnits('1000000000', 8))
-  console.log('Deployed USDToken at', usdAddr.address)
+  console.log('Deployed USDT at', usdAddr.address)
 
   // 2. deploy usd paymaster
   const usdPaymaster = await new USDPaymaster__factory(ethers.provider.getSigner()).deploy(acctokFactory, epAddr, usdAddr.address, usdAddr.address)
   console.log('Deployed USDPaymaster at', usdPaymaster.address)
+
+  const tokenAddr = await dep.deterministicDeploy(new Token__factory(), 0, ['TestToken', 'TT'])
+  // const tokenAddr = await new Token__factory(ethers.provider.getSigner()).deploy('TestToken', 'TT')
+  console.log('Deployed Token at', tokenAddr)
+
+  // 4. fixed create and tx fee paymaster
+  const fixedPaymaster = await new FixedPaymaster__factory(ethers.provider.getSigner()).deploy(acctokFactory, epAddr, tokenAddr, parseEther('1'), parseEther('10'))
+  console.log('Deployed FixedPaymaster at', fixedPaymaster.address)
 
   // 3. gasless paymaster
   const gaslessPaymaster = await new GaslessPaymaster__factory(ethers.provider.getSigner()).deploy(epAddr, ethers.provider.getSigner().getAddress())
@@ -61,15 +69,6 @@ const deployEP: DeployFunction = async function (hre: HardhatRuntimeEnvironment)
   // 3. verified paymaster
   const verifiedPaymaster = await new VerifyingPaymaster__factory(ethers.provider.getSigner()).deploy(epAddr, ethers.provider.getSigner().getAddress())
   console.log('Deployed VerifiedPaymaster at', verifiedPaymaster.address)
-
-  // deploy erc20
-  // const tokenAddr = await dep.deterministicDeploy(new Token__factory(), 0, ['TestToken', 'TT'])
-  const tokenAddr = await new Token__factory(ethers.provider.getSigner()).deploy('TestToken', 'TT')
-  console.log('Deployed custom Token at', tokenAddr.address)
-
-  // 4. fixed create and tx fee paymaster
-  const fixedPaymaster = await new FixedPaymaster__factory(ethers.provider.getSigner()).deploy(acctokFactory, epAddr, tokenAddr.address, parseEther('1'), parseEther('10'))
-  console.log('Deployed FixedPaymaster at', fixedPaymaster.address)
 }
 
 export default deployEP
