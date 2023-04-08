@@ -10,7 +10,7 @@ import { EntryPoint, EntryPoint__factory } from '@account-abstraction/contracts'
 
 import { initServer } from './modules/initServer'
 import { DebugMethodHandler } from './DebugMethodHandler'
-import { DeterministicDeployer } from '@accountjs/sdk'
+import { DeterministicDeployer } from '@account-abstraction/sdk'
 import { isGeth, supportsRpcMethod } from './utils'
 import { resolveConfiguration } from './Config'
 import { bundlerConfigDefault } from './BundlerConfig'

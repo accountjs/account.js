@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@account-abstraction/contracts": "^0.5.0",
+    "@account-abstraction/sdk": "^0.5.0",
     "@account-abstraction/utils": "^0.5.0",
     "@accountjs/contracts": "workspace:*",
     "@accountjs/sdk": "workspace:*",
