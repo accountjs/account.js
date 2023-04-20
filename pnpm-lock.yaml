@@ -131,6 +131,12 @@ importers:
       '@types/mocha':
         specifier: ^9.1.1
         version: 9.1.1
+      big-integer:
+        specifier: ^1.6.51
+        version: 1.6.51
+      circomlibjs:
+        specifier: ^0.0.8
+        version: 0.0.8
       dotenv:
         specifier: ^16.0.3
         version: 16.0.3
@@ -239,17 +245,20 @@ importers:
       '@account-abstraction/contracts':
         specifier: ^0.5.0
         version: 0.5.0
+      '@account-abstraction/sdk':
+        specifier: ^0.5.0
+        version: 0.5.0
       '@account-abstraction/utils':
         specifier: ^0.5.0
         version: 0.5.0
       '@accountjs/contracts':
-        specifier: ^0.1.1
+        specifier: workspace:*
         version: link:../account-abstraction/contracts
       '@accountjs/sdk':
-        specifier: ^0.1.2
+        specifier: workspace:*
         version: link:../sdk
       '@accountjs/utils':
-        specifier: ^0.1.1
+        specifier: workspace:*
         version: link:../utils
       '@ethersproject/abi':
         specifier: ^5.7.0
@@ -367,10 +376,10 @@ importers:
         specifier: ^0.5.0
         version: 0.5.0
       '@accountjs/contracts':
-        specifier: ^0.1.1
+        specifier: workspace:*
         version: link:../account-abstraction/contracts
       '@accountjs/utils':
-        specifier: ^0.1.0
+        specifier: workspace:*
         version: link:../utils
       '@ethersproject/abstract-provider':
         specifier: ^5.7.0
@@ -425,7 +434,7 @@ importers:
         specifier: ^0.5.0
         version: 0.5.0
       '@accountjs/contracts':
-        specifier: ^0.1.1
+        specifier: workspace:*
         version: link:../account-abstraction/contracts
       '@ethersproject/abi':
         specifier: ^5.7.0
@@ -466,6 +475,25 @@ packages:
 
   /@account-abstraction/contracts@0.5.0:
     resolution: {integrity: sha512-CKyS9Zh5rcYUM+4B6TlaB9+THHzJ+6TY3tWF5QofqvFpqGNvIhF8ddy6wyCmqZw6TB74/yYv7cYD/RarVudfDg==}
+    dev: false
+
+  /@account-abstraction/sdk@0.5.0:
+    resolution: {integrity: sha512-KuEG9UVl2kEhamevFmPJfqY5AQH4fRLnFhfWAdoqwxIZIuSyA8wfyzM9WKnDPSCaiApLvSzckjRwbs4dVoOp2Q==}
+    dependencies:
+      '@account-abstraction/contracts': 0.5.0
+      '@account-abstraction/utils': 0.5.0
+      '@ethersproject/abstract-provider': 5.7.0
+      '@ethersproject/abstract-signer': 5.7.0
+      '@ethersproject/networks': 5.7.1
+      '@ethersproject/properties': 5.7.0
+      '@ethersproject/providers': 5.7.2
+      '@types/debug': 4.1.7
+      debug: 4.3.4(supports-color@8.1.1)
+      ethers: 5.7.2
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
     dev: false
 
   /@account-abstraction/utils@0.5.0:
@@ -639,7 +667,7 @@ packages:
   /@ethereumjs/tx@3.3.2:
     resolution: {integrity: sha512-6AaJhwg4ucmwTvw/1qLaZUX5miWrwZ4nLOUsKyb/HtzS3BMw/CasKhdi1ims9mBKeK9sOJCH4qGKOBGyJCeeog==}
     dependencies:
-      '@ethereumjs/common': 2.5.0
+      '@ethereumjs/common': 2.6.5
       ethereumjs-util: 7.1.5
 
   /@ethereumjs/tx@3.5.2:
@@ -3173,6 +3201,10 @@ packages:
       deep-equal: 2.2.0
     dev: true
 
+  /b4a@1.6.3:
+    resolution: {integrity: sha512-aX6/FqpWQve8VN9kyTExy7GlmwNShvxcCWWD5QVR3ZbRlyBGtCrG5Autu95xxSPH4CRs+5PSV4d7PRnWpmqFlA==}
+    dev: false
+
   /babel-code-frame@6.26.0:
     resolution: {integrity: sha512-XqYMR2dfdGMW+hd0IUZ2PwK+fGeFkOxZJ0wY+JaQAHzt1Zx8LcvpiZD2NiGkEG8qx0CfkAOr5xt76d1e8vG90g==}
     dependencies:
@@ -3733,6 +3765,11 @@ packages:
   /bech32@1.1.4:
     resolution: {integrity: sha512-s0IrSOzLlbvX7yp4WBfPITzpAU8sqQcpsmwXDiKwrG4r491vwCO/XpejasRNl0piBMe/DvP4Tz0mIS/X1DPJBQ==}
 
+  /big-integer@1.6.51:
+    resolution: {integrity: sha512-GPEid2Y9QU1Exl1rpO9B2IPJGHPSupF5GnVIP0blYvNOMer2bTvSWs1jGOUg04hTmu67nmLsQ9TBo1puaotBHg==}
+    engines: {node: '>=0.6'}
+    dev: false
+
   /bigint-crypto-utils@3.1.8:
     resolution: {integrity: sha512-+VMV9Laq8pXLBKKKK49nOoq9bfR3j7NNQAtbA617a4nw9bVLo8rsqkKMBgM2AJWlNX9fEIyYaYX+d0laqYV4tw==}
     engines: {node: '>=10.4.0'}
@@ -3775,6 +3812,30 @@ packages:
       readable-stream: 3.6.0
     dev: false
     optional: true
+
+  /blake-hash@2.0.0:
+    resolution: {integrity: sha512-Igj8YowDu1PRkRsxZA7NVkdFNxH5rKv5cpLxQ0CVXSIA77pVYwCPRQJ2sMew/oneUpfuYRyjG6r8SmmmnbZb1w==}
+    engines: {node: '>= 10'}
+    requiresBuild: true
+    dependencies:
+      node-addon-api: 3.2.1
+      node-gyp-build: 4.6.0
+      readable-stream: 3.6.0
+    dev: false
+
+  /blake2b-wasm@2.4.0:
+    resolution: {integrity: sha512-S1kwmW2ZhZFFFOghcx73+ZajEfKBqhP82JMssxtLVMxlaPea1p9uoLiUZ5WYyHn0KddwbLc+0vh4wR0KBNoT5w==}
+    dependencies:
+      b4a: 1.6.3
+      nanoassert: 2.0.0
+    dev: false
+
+  /blake2b@2.1.4:
+    resolution: {integrity: sha512-AyBuuJNI64gIvwx13qiICz6H6hpmjvYS5DGkG6jbXMOT8Z3WUJ3V1X0FlhIoT1b/5JtHE3ki+xjtMvu1nn+t9A==}
+    dependencies:
+      blake2b-wasm: 2.4.0
+      nanoassert: 2.0.0
+    dev: false
 
   /blakejs@1.2.1:
     resolution: {integrity: sha512-QXUSXI3QVc/gJME0dBpXrag1kbzOqCjCX8/b54ntNyW6sjtoqxqRk3LTmXzaJoh71zMsDCjM+47jS7XiwN/+fQ==}
@@ -4045,7 +4106,7 @@ packages:
       responselike: 2.0.1
 
   /cachedown@1.0.0:
-    resolution: {integrity: sha512-t+yVk82vQWCJF3PsWHMld+jhhjkkWjcAzz8NbFx1iULOXWl8Tm/FdM4smZNVw3MRr0X+lVTx9PKzvEn4Ng19RQ==}
+    resolution: {integrity: sha1-1D8DbkUQaWsxJG19sx6/D3rDLRU=}
     dependencies:
       abstract-leveldown: 2.7.2
       lru-cache: 3.2.0
@@ -4274,6 +4335,21 @@ packages:
     dependencies:
       inherits: 2.0.4
       safe-buffer: 5.2.1
+
+  /circomlibjs@0.0.8:
+    resolution: {integrity: sha512-oZFYapLO0mfiA+i2GU/V7bRNEEPjVcwV4M444nU5lNsdSJpqLwD57m9zxTD5m/KeY7WQ3lEAC9NNKEPQHu7s1w==}
+    dependencies:
+      blake-hash: 2.0.0
+      blake2b: 2.1.4
+      ffjavascript: 0.2.57
+      web3: 1.8.2
+      web3-utils: 1.8.2
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - supports-color
+      - utf-8-validate
+    dev: false
 
   /class-is@1.1.0:
     resolution: {integrity: sha512-rhjH9AG1fvabIDoGRVH587413LPjTZgmDF9fOFCbFJQV4yuocX1mHxxvXI4g3cGwbVY9wAYIoKlg1N79frJKQw==}
@@ -6655,6 +6731,14 @@ packages:
       node-fetch: 1.7.3
     dev: true
 
+  /ffjavascript@0.2.57:
+    resolution: {integrity: sha512-V+vxZ/zPNcthrWmqfe/1YGgqdkTamJeXiED0tsk7B84g40DKlrTdx47IqZuiygqAVG6zMw4qYuvXftIJWsmfKQ==}
+    dependencies:
+      wasmbuilder: 0.0.16
+      wasmcurves: 0.2.0
+      web-worker: 1.2.0
+    dev: false
+
   /figures@2.0.0:
     resolution: {integrity: sha512-Oa2M9atig69ZkfwiApY8F2Yy+tzMbazyvqv21R0NsSC8floSOC09BbT1ITWAdoMGQvJ/aZnR1KMwdx9tvHnTNA==}
     engines: {node: '>=4'}
@@ -7148,7 +7232,7 @@ packages:
     dev: false
 
   /github-from-package@0.0.0:
-    resolution: {integrity: sha512-SyHy3T1v2NUXn29OsWdxmK6RwHD+vkj3v8en8AOBZ1wBQ/hCAQ5bAQTD02kW4W9tUp/3Qh6J8r9EvntiyCmOOw==}
+    resolution: {integrity: sha1-l/tdlr/eiXMxPyDoKI75oWf6ZM4=}
     dev: false
     optional: true
 
@@ -9898,6 +9982,10 @@ packages:
   /nano-json-stream-parser@0.1.2:
     resolution: {integrity: sha512-9MqxMH/BSJC7dnLsEMPyfN5Dvoo49IsPFYMcHw3Bcfc2kN0lpHRBSzlMSVx4HGyJ7s9B31CyBTVehWJoQ8Ctew==}
 
+  /nanoassert@2.0.0:
+    resolution: {integrity: sha512-7vO7n28+aYO4J+8w96AzhmU8G+Y/xpPDJz/se19ICsqj/momRbb9mh9ZUtkoJ5X3nTnPdhEJyc0qnM6yAsHBaA==}
+    dev: false
+
   /nanoid@3.3.3:
     resolution: {integrity: sha512-p1sjXuopFs0xg+fPASzQ28agW1oHD7xDsd9Xkf3T15H3c/cifrFHVwrh74PdoklAPi+i7MdRsE47vm2r6JoB+w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -10121,7 +10209,6 @@ packages:
   /node-addon-api@3.2.1:
     resolution: {integrity: sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A==}
     dev: false
-    optional: true
 
   /node-addon-api@4.3.0:
     resolution: {integrity: sha512-73sE9+3UaLYYFmDsFZnqCInzPyh3MqIwZO9cw58yIqAZhONrrabrYyYe3TuIqtIiOuTXVhsGau8hcrhhwSsDIQ==}
@@ -10402,7 +10489,7 @@ packages:
     resolution: {integrity: sha512-lgHwxlxV1qIg1Eap7LgIeoBWIMFibOjbrYPIPJZcI1mmGAI2m3lNYpK12Y+GBdPQ0U1hRwSord7GIaawz962qQ==}
 
   /oboe@2.1.4:
-    resolution: {integrity: sha512-ymBJ4xSC6GBXLT9Y7lirj+xbqBLa+jADGJldGEYG7u8sZbS9GyG+u1Xk9c5cbriKwSpCg41qUhPjvU5xOpvIyQ==}
+    resolution: {integrity: sha1-IMiM2wwVNxuwQRklfU/dNLCqSfY=}
     dependencies:
       http-https: 1.0.0
     dev: true
@@ -11152,7 +11239,7 @@ packages:
       strict-uri-encode: 1.1.0
 
   /querystring@0.2.0:
-    resolution: {integrity: sha512-X/xY82scca2tau62i9mDyU9K+I+djTMUsvwf7xnUX5GLvVzgJybOJf4Y6o9Zx3oJK/LSXg5tTZBjwzqVPaPO2g==}
+    resolution: {integrity: sha1-sgmEkgO7Jd+CDadW50cAWHhSFiA=}
     engines: {node: '>=0.4.x'}
     deprecated: The querystring API is considered Legacy. new code should use the URLSearchParams API instead.
     dev: true
@@ -13495,8 +13582,22 @@ packages:
     resolution: {integrity: sha512-AFbieoL7a5LMqcnOF04ji+rpXadgOXnZsxQr//r83kLPr7biP7am3g9zbaZIaBGwBRWeSvoMD4mgPdX3e4NWBg==}
     dev: false
 
+  /wasmbuilder@0.0.16:
+    resolution: {integrity: sha512-Qx3lEFqaVvp1cEYW7Bfi+ebRJrOiwz2Ieu7ZG2l7YyeSJIok/reEQCQCuicj/Y32ITIJuGIM9xZQppGx5LrQdA==}
+    dev: false
+
+  /wasmcurves@0.2.0:
+    resolution: {integrity: sha512-3e2rbxdujOwaod657gxgmdhZNn+i1qKdHO3Y/bK+8E7bV8ttV/fu5FO4/WLBACF375cK0QDLOP+65Na63qYuWA==}
+    dependencies:
+      wasmbuilder: 0.0.16
+    dev: false
+
   /web-namespaces@2.0.1:
     resolution: {integrity: sha512-bKr1DkiNa2krS7qxNtdrtHAmzuYGFQLiQ13TsorsdT6ULTkPLKuu5+GsFpDlg6JFjUTwX2DyhMPG2be8uPrqsQ==}
+    dev: false
+
+  /web-worker@1.2.0:
+    resolution: {integrity: sha512-PgF341avzqyx60neE9DD+XS26MMNMoUQRz9NOZwW32nPQrF6p77f1htcnjBSEV8BGMKZ16choqUG4hyI0Hx7mA==}
     dev: false
 
   /web3-bzz@1.2.11:
