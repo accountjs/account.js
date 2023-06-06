@@ -1,6 +1,6 @@
 {
   "name": "@accountjs/bundler",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "main": "src/types/index.js",
   "files": [
     "dist/src/",
@@ -25,9 +25,9 @@
     "watch-tsc": "tsc -w --preserveWatchOutput"
   },
   "dependencies": {
-    "@account-abstraction/contracts": "^0.5.0",
-    "@account-abstraction/sdk": "^0.5.0",
-    "@account-abstraction/utils": "^0.5.0",
+    "@account-abstraction/contracts": "^0.6.0",
+    "@account-abstraction/sdk": "^0.6.0",
+    "@account-abstraction/utils": "^0.6.0",
     "@accountjs/contracts": "workspace:*",
     "@accountjs/sdk": "workspace:*",
     "@accountjs/utils": "workspace:*",

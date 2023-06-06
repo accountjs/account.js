@@ -247,14 +247,14 @@ importers:
   packages/bundler:
     dependencies:
       '@account-abstraction/contracts':
-        specifier: ^0.5.0
-        version: 0.5.0
+        specifier: ^0.6.0
+        version: 0.6.0
       '@account-abstraction/sdk':
-        specifier: ^0.5.0
-        version: 0.5.0
+        specifier: ^0.6.0
+        version: 0.6.0
       '@account-abstraction/utils':
-        specifier: ^0.5.0
-        version: 0.5.0
+        specifier: ^0.6.0
+        version: 0.6.0
       '@accountjs/contracts':
         specifier: workspace:*
         version: link:../account-abstraction/contracts
@@ -374,11 +374,11 @@ importers:
   packages/sdk:
     dependencies:
       '@account-abstraction/contracts':
-        specifier: ^0.5.0
-        version: 0.5.0
+        specifier: ^0.6.0
+        version: 0.6.0
       '@account-abstraction/utils':
-        specifier: ^0.5.0
-        version: 0.5.0
+        specifier: ^0.6.0
+        version: 0.6.0
       '@accountjs/contracts':
         specifier: workspace:*
         version: link:../account-abstraction/contracts
@@ -435,8 +435,8 @@ importers:
   packages/utils:
     dependencies:
       '@account-abstraction/contracts':
-        specifier: ^0.5.0
-        version: 0.5.0
+        specifier: ^0.6.0
+        version: 0.6.0
       '@accountjs/contracts':
         specifier: workspace:*
         version: link:../account-abstraction/contracts
@@ -477,15 +477,15 @@ importers:
 
 packages:
 
-  /@account-abstraction/contracts@0.5.0:
-    resolution: {integrity: sha512-CKyS9Zh5rcYUM+4B6TlaB9+THHzJ+6TY3tWF5QofqvFpqGNvIhF8ddy6wyCmqZw6TB74/yYv7cYD/RarVudfDg==}
+  /@account-abstraction/contracts@0.6.0:
+    resolution: {integrity: sha512-8ooRJuR7XzohMDM4MV34I12Ci2bmxfE9+cixakRL7lA4BAwJKQ3ahvd8FbJa9kiwkUPCUNtj+/zxDQWYYalLMQ==}
     dev: false
 
-  /@account-abstraction/sdk@0.5.0:
-    resolution: {integrity: sha512-KuEG9UVl2kEhamevFmPJfqY5AQH4fRLnFhfWAdoqwxIZIuSyA8wfyzM9WKnDPSCaiApLvSzckjRwbs4dVoOp2Q==}
+  /@account-abstraction/sdk@0.6.0:
+    resolution: {integrity: sha512-zZNOhMCNUTi8UkCks5x5GKAbuc7pjbsZzbCivfqlPRoldulG7ieauyVwQfnDxR3Qe0jsop7WWnShMmObe4sw/A==}
     dependencies:
-      '@account-abstraction/contracts': 0.5.0
-      '@account-abstraction/utils': 0.5.0
+      '@account-abstraction/contracts': 0.6.0
+      '@account-abstraction/utils': 0.6.0
       '@ethersproject/abstract-provider': 5.7.0
       '@ethersproject/abstract-signer': 5.7.0
       '@ethersproject/networks': 5.7.1
@@ -500,10 +500,10 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@account-abstraction/utils@0.5.0:
-    resolution: {integrity: sha512-dgXguTn5WgFMmr3wQMdLGEoIMDcIJgzAv74YlHeb2D3Nyy1pByPArSb3eLOOcgxCJSJeqTscpO9P57uhNkkC4A==}
+  /@account-abstraction/utils@0.6.0:
+    resolution: {integrity: sha512-K99c3TNrKjxXDkLLAYOP6DCg0v0FGqQmSQh+NCC9R44k8OOzQ7aOrfOxAqhRYWvhZnNiI4+BVdSrkvyzAXaLJw==}
     dependencies:
-      '@account-abstraction/contracts': 0.5.0
+      '@account-abstraction/contracts': 0.6.0
       '@ethersproject/abi': 5.7.0
       '@ethersproject/providers': 5.7.2
       '@openzeppelin/contracts': 4.8.1

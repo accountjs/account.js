@@ -85,7 +85,7 @@ export class SimpleAccountForTokensAPI extends BaseAccountAPI {
       return BigNumber.from(0)
     }
     const accountContract = await this._getAccountContract()
-    return await accountContract.nonce()
+    return await accountContract.getNonce()
   }
 
   /**
