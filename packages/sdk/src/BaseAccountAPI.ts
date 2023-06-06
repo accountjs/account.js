@@ -126,6 +126,9 @@ export abstract class BaseAccountAPI {
     try {
       await this.entryPointView.callStatic.getSenderAddress(initCode)
     } catch (e: any) {
+      if (e.errorArgs == null) {
+        throw e
+      }
       return e.errorArgs.sender
     }
     throw new Error('must handle revert')
@@ -263,23 +266,19 @@ export abstract class BaseAccountAPI {
       paymasterAndData: '0x'
     }
 
-    // let paymasterAndData: string | undefined
-    partialUserOp.preVerificationGas = await this.getPreVerificationGas(partialUserOp)
-    console.log('preVerificationGas', partialUserOp.preVerificationGas)
+    let paymasterAndData: string | undefined
     if (this.paymasterAPI != null) {
       // fill (partial) preVerificationGas (all except the cost of the generated paymasterAndData)
-      // const userOpForPm = {
-      //   ...partialUserOp,
-      //   preVerificationGas: await this.getPreVerificationGas(partialUserOp)
-      // }
-      partialUserOp.paymasterAndData = await this.paymasterAPI.getPaymasterAndData(partialUserOp)
+      const userOpForPm = {
+        ...partialUserOp,
+        preVerificationGas: await this.getPreVerificationGas(partialUserOp)
+      }
+      paymasterAndData = await this.paymasterAPI.getPaymasterAndData(userOpForPm)
     }
-    // partialUserOp.paymasterAndData = paymasterAndData ?? '0x'
-    console.log('preVerificationGas', partialUserOp.preVerificationGas)
-
+    partialUserOp.paymasterAndData = paymasterAndData ?? '0x'
     return {
       ...partialUserOp,
-      // preVerificationGas: this.getPreVerificationGas(partialUserOp), // you cannot change cus paymaster signature
+      preVerificationGas: this.getPreVerificationGas(partialUserOp),
       signature: ''
     }
   }

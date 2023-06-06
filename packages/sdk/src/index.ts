@@ -1,6 +1,5 @@
 export { SimpleAccountAPI } from './SimpleAccountAPI'
 export { SimpleAccountForTokensAPI } from './SimpleAccountForTokensAPI'
-export { PrivateRecoveryAccountAPI } from './PrivateRecoveryAccountAPI'
 export { BasePaymasterAPI } from './BasePaymasterAPI'
 export { TokenPaymasterAPI } from './TokenPaymasterAPI'
 export { VerifiedPaymasterAPI } from './VerifiedPaymasterAPI'

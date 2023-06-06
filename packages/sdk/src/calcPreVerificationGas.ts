@@ -74,8 +74,7 @@ export function calcPreVerificationGas (userOp: Partial<NotPromise<UserOperation
     callDataCost +
     ov.fixed / ov.bundleSize +
     ov.perUserOp +
-    ov.perUserOpWord * lengthInWord +
-    2048
+    ov.perUserOpWord * lengthInWord
   )
   return ret
 }

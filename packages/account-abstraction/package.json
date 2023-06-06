@@ -5,7 +5,6 @@
   "scripts": {
     "clear": "rm -rf cache artifacts typechain typechain-types dist contracts/dist",
     "hardhat-compile": "./scripts/hh-wrapper compile",
-    "guardian-deploy": "pnpm hardhat deploy",
     "lint": "pnpm compile && pnpm run lint:sol && pnpm run lint:js ",
     "lint:js": "eslint -f unix .",
     "lint-fix": "eslint -f unix . --fix",
