@@ -173,7 +173,7 @@ async function main (): Promise<void> {
   const client = await new Runner(provider, opts.bundlerUrl, accountOwner, opts.entryPoint, index).init(deployFactory ? signer : undefined)
   const addr = await client.getAddress()
 
-  // transfer 1 weth to addr
+  // 转入 1 WETH
   await weth.transfer(addr, parseEther('1'))
 
   async function isDeployed (addr: string): Promise<boolean> {
@@ -188,21 +188,27 @@ async function main (): Promise<void> {
     return await weth.balanceOf(addr)
   }
 
+  // 存够 0.5
   const bal = await getBalance(addr)
-  const wbal = await getWethBalance(addr)
   const requiredBalance = parseEther('0.5')
   console.log('funding account to', requiredBalance)
+  // 发送转成WETH
   await signer.sendTransaction({
     to: addr,
     value: requiredBalance.sub(bal)
   })
-  console.log('account address', addr, 'deployed=', await isDeployed(addr), 'bal=', formatEther(bal), 'weth=', formatEther(wbal))
-  const ownerAddr = await accountOwner.getAddress()
-  let ownerBal = await weth.balanceOf(ownerAddr)
-  console.log('owner', ownerAddr, 'bal=', formatEther(ownerBal))
 
+  const bal0 = await getBalance(addr)
+  const wbal = await getWethBalance(addr)
+  // 0.5 ETH 1 weth
+  console.log('account address', addr, 'deployed=', await isDeployed(addr), 'bal=', formatEther(bal0), 'weth=', formatEther(wbal))
+  const ownerAddr = await accountOwner.getAddress()
+  const ownerBal = await weth.balanceOf(ownerAddr)
+  console.log('owner', ownerAddr, 'WETH bal=', formatEther(ownerBal))
+
+  // 转账 0.1 ETH
   const dest = addr
-  await client.transferETH(ownerAddr, '0.2')
+  await client.transferETH(ownerAddr, '0.1')
   console.log('after run1')
 
   await Sleep(5000)
@@ -210,17 +216,19 @@ async function main (): Promise<void> {
   const bal1 = await getBalance(dest)
   const wbal1 = await getWethBalance(addr)
   console.log('account address', addr, 'deployed=', await isDeployed(addr), 'bal=', formatEther(bal1), 'weth=', formatEther(wbal1))
-  ownerBal = await weth.balanceOf(ownerAddr)
-  console.log('owner', ownerAddr, 'bal=', formatEther(ownerBal))
+  // ownerBal = await weth.balanceOf(ownerAddr)
+  // console.log('owner', ownerAddr, 'WETH bal=', formatEther(ownerBal))
 
+  // 转账 0.2 ETH
   await client.transferETH(ownerAddr, '0.2')
   console.log('after run2')
   await Sleep(5000)
 
   const bal2 = await getBalance(dest)
-  console.log('account address', addr, 'deployed=', await isDeployed(addr), 'bal=', formatEther(bal2))
-  ownerBal = await weth.balanceOf(ownerAddr)
-  console.log('owner', ownerAddr, 'bal=', formatEther(ownerBal))
+  const wbal2 = await getWethBalance(addr)
+  console.log('account address', addr, 'deployed=', await isDeployed(addr), 'bal=', formatEther(bal2), 'weth=', formatEther(wbal2))
+  // ownerBal = await weth.balanceOf(ownerAddr)
+  // console.log('owner', ownerAddr, 'WETH bal=', formatEther(ownerBal))
   await bundler?.stop()
 }
 

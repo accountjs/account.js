@@ -48,6 +48,7 @@ class Runner {
       process.exit(1)
     }
 
+    // 使用 VerifyPaymaster
     const paymasterAPI = new VerifiedPaymasterAPI(GASLESS_PAYMASTER, await this.provider.getSigner())
 
     const net = await this.provider.getNetwork()
@@ -68,6 +69,7 @@ class Runner {
     return this
   }
 
+  //  发送到bundler
   async runUserOp (target: string, data: string): Promise<void> {
     const userOp = await this.accountApi.createSignedUserOp({
       target,
@@ -84,6 +86,7 @@ class Runner {
     }
   }
 
+  // 估算gas
   async estUserOp (target: string, data: string): Promise<void> {
     const userOp = await this.accountApi.createSignedUserOp({
       target,
@@ -98,6 +101,7 @@ class Runner {
     }
   }
 
+  // 直接发送
   async hdlUserOp (target: string, data: string, signer: Signer): Promise<void> {
     const userOp = await this.accountApi.createSignedUserOp({
       target,
@@ -168,15 +172,14 @@ async function main (): Promise<void> {
     throw new Error('must specify --mnemonic')
   }
 
-  // signer transfer 10 eth to WETH
   const eth0 = await signer.getBalance()
   console.log('eth0=', formatEther(eth0))
 
   const paymaster = GaslessPaymaster__factory.connect(GASLESS_PAYMASTER, signer)
-  // paymaster deposit 1 eth
   console.log('paymaster owner:', await paymaster.owner())
   console.log('paymaster signer:', await paymaster.verifyingSigner())
 
+  // paymaster deposit 1 eth
   await paymaster.deposit({ value: parseEther('1') })
   // await paymaster.addStake(1000, { value: parseEther('1') })
   const deposit = await paymaster.getDeposit()

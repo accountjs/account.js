@@ -115,6 +115,8 @@ async function main (): Promise<void> {
   let signer: Signer
   const deployFactory: boolean = opts.deployFactory
   let bundler: BundlerServer | undefined
+
+  // 如果是本地环境，需要启动bundler
   if (opts.selfBundler != null) {
     // todo: if node is geth, we need to fund our bundler's account:
     const signer = provider.getSigner()
@@ -137,6 +139,8 @@ async function main (): Promise<void> {
     bundler = await runBundler(argv)
     await bundler.asyncStart()
   }
+
+  // 设置签名账户
   if (opts.mnemonic != null) {
     signer = Wallet.fromMnemonic(fs.readFileSync(opts.mnemonic, 'ascii').trim()).connect(provider)
   } else {
@@ -157,6 +161,8 @@ async function main (): Promise<void> {
 
   const index = opts.nonce ?? Date.now()
   console.log('using account index=', index)
+
+  // 初始化账户
   const client = await new Runner(provider, opts.bundlerUrl, accountOwner, opts.entryPoint, index).init(deployFactory ? signer : undefined)
 
   const addr = await client.getAddress()
@@ -169,6 +175,7 @@ async function main (): Promise<void> {
     return await provider.getBalance(addr)
   }
 
+  // 水龙头
   const bal = await getBalance(addr)
   console.log('account address', addr, 'deployed=', await isDeployed(addr), 'bal=', formatEther(bal))
   const gasPrice = await provider.getGasPrice()
@@ -184,9 +191,12 @@ async function main (): Promise<void> {
     console.log('not funding account. balance is enough')
   }
 
+  // 调用合约
   const dest = addr
   const data = keccak256(Buffer.from('entryPoint()')).slice(0, 10)
   console.log('data=', data)
+
+  // 向bundler发送交易
   await client.runUserOp(dest, data)
   console.log('after run1')
   // client.accountApi.overheads!.perUserOp = 30000

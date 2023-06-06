@@ -133,6 +133,7 @@ async function main (): Promise<void> {
   let signer: Signer
   const deployFactory: boolean = opts.deployFactory
   let bundler: BundlerServer | undefined
+  //
   if (opts.selfBundler != null) {
     console.log('starting bundler in-process')
 
@@ -171,9 +172,9 @@ async function main (): Promise<void> {
     throw new Error('must specify --mnemonic')
   }
 
-  // check USDT balance
+  // check ERC20 balance
   const token = Token__factory.connect(ERC20, signer)
-
+  // mint 1M tokens
   await token.mint(parseEther('1000000'))
 
   const tokBal = await token.balanceOf(signer.getAddress())
@@ -192,7 +193,7 @@ async function main (): Promise<void> {
   const index = Date.now()
   const client = await new Runner(provider, opts.bundlerUrl, accountOwner, opts.entryPoint, index).init(deployFactory ? signer : undefined)
   const addr = await client.getAddress()
-  // transfer 1 weth to addr
+  // 转账 100 token
   await token.transfer(addr, parseEther('100'))
 
   async function isDeployed (addr: string): Promise<boolean> {

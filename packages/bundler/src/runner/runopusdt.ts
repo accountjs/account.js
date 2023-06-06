@@ -133,6 +133,7 @@ async function main (): Promise<void> {
   let signer: Signer
   const deployFactory: boolean = opts.deployFactory
   let bundler: BundlerServer | undefined
+  // 如果是本地环境，需要启动bundler
   if (opts.selfBundler != null) {
     console.log('starting bundler in-process')
 
@@ -179,13 +180,14 @@ async function main (): Promise<void> {
   const paymaster = USDPaymaster__factory.connect(USD_PAYMASTER, signer)
   console.log('paymaster owner:', await paymaster.owner())
 
-  // paymaster deposit 1 eth
+  // Paymaster deposit 1 eth to pay for gas
   await paymaster.deposit({ value: parseEther('1') })
   const deposit = await paymaster.getDeposit()
   console.log('paymaster deposit=', formatEther(deposit))
 
   const accountOwner = new Wallet('0x'.padEnd(66, '7'))
 
+  // 初始化账户
   const index = Date.now()
   const client = await new Runner(provider, opts.bundlerUrl, accountOwner, opts.entryPoint, index).init(deployFactory ? signer : undefined)
   const addr = await client.getAddress()
@@ -205,12 +207,14 @@ async function main (): Promise<void> {
   console.log('account address', addr, 'deployed=', await isDeployed(addr), 'bal=', formatUnits(bal, 8))
 
   const dest = addr
-  const data = keccak256(Buffer.from('nonce()')).slice(0, 10)
+  const data = keccak256(Buffer.from('nonce()')).slice(0, 10) // 发送个随机数据
   console.log('data=', data)
+  // 发送到bundler
   await client.runUserOp(dest, data)
   console.log('after run1')
   await Sleep(5000)
 
+  // 查看 usdt 余额
   const bal1 = await getBalance(dest)
   console.log('account address', addr, 'deployed=', await isDeployed(addr), 'bal=', formatUnits(bal1, 8))
   // client.accountApi.overheads!.perUserOp = 30000
