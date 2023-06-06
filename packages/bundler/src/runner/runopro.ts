@@ -16,8 +16,7 @@ import { runBundler } from '../runBundler'
 import { BundlerServer } from '../BundlerServer'
 import { parseExpectedGas, Sleep } from './utils'
 
-const ENTRY_POINT = '0x0576a174d229e3cfa37253523e645a78a0c91b57'
-
+const ENTRY_POINT = '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789'
 class Runner {
   aaProvider!: ERC4337EthersProvider
 

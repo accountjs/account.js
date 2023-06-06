@@ -16,12 +16,7 @@ import { HttpRpcClient, SimpleAccountForTokensAPI, TokenPaymasterAPI } from '@ac
 import { runBundler } from '../runBundler'
 import { BundlerServer } from '../BundlerServer'
 import { parseExpectedGas, Sleep } from './utils'
-
-const ENTRY_POINT = '0x0576a174d229e3cfa37253523e645a78a0c91b57'
-const USDT = '0x0165878A594ca255338adfa4d48449f69242Eb8F'
-const ACCTOK_FACTORY = '0xf25dc911d2c89559aeef1a49e36582f9cb305397'
-const USD_PAYMASTER = '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853'
-const beneficiary = '0xd21934eD8eAf27a67f0A70042Af50A1D6d195E81'
+import { ENTRY_POINT, ACCTOK_FACTORY, USDT, USD_PAYMASTER, beneficiary } from './constants'
 
 class Runner {
   bundlerProvider!: HttpRpcClient

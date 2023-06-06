@@ -15,11 +15,7 @@ import { HttpRpcClient, SimpleAccountAPI, VerifiedPaymasterAPI } from '@accountj
 import { runBundler } from '../runBundler'
 import { BundlerServer } from '../BundlerServer'
 import { parseExpectedGas, Sleep } from './utils'
-
-const ENTRY_POINT = '0x0576a174d229e3cfa37253523e645a78a0c91b57'
-const ACC_FACTORY = '0x7192244743491fcb3f8f682d57ab6e9e1f41de6e'
-const GASLESS_PAYMASTER = '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6'
-const beneficiary = '0xd21934eD8eAf27a67f0A70042Af50A1D6d195E81'
+import { ENTRY_POINT, ACC_FACTORY, GASLESS_PAYMASTER, VERIFYING_PAYMASTER, beneficiary } from './constants'
 class Runner {
   bundlerProvider!: HttpRpcClient
   accountApi!: SimpleAccountAPI
@@ -51,7 +47,7 @@ class Runner {
       process.exit(1)
     }
 
-    const paymasterAPI = new VerifiedPaymasterAPI(GASLESS_PAYMASTER, await this.provider.getSigner())
+    const paymasterAPI = new VerifiedPaymasterAPI(VERIFYING_PAYMASTER, await this.provider.getSigner())
 
     const net = await this.provider.getNetwork()
     const chainId = net.chainId

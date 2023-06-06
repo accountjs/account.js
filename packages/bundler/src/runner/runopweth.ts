@@ -15,14 +15,7 @@ import { ERC4337EthersProvider, TokenPaymasterAPI, ClientConfig, wrapPaymasterPr
 import { runBundler } from '../runBundler'
 import { BundlerServer } from '../BundlerServer'
 import { Sleep } from './utils'
-
-const ENTRY_POINT = '0x0576a174d229e3cfa37253523e645a78a0c91b57'
-const WETH = '0xfb970555c468b82cd55831d09bb4c7ee85188675'
-const ACCTOK_FACTORY = '0xf25dc911d2c89559aeef1a49e36582f9cb305397'
-const WETH_PAYMASTER = '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707'
-const USD_PAYMASTER = '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853'
-const GASLESS_PAYMASTER = '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6'
-const beneficiary = '0xd21934eD8eAf27a67f0A70042Af50A1D6d195E81'
+import { ENTRY_POINT, WETH, ACCTOK_FACTORY, WETH_PAYMASTER } from './constants'
 class Runner {
   aaProvider!: ERC4337EthersProvider
 
@@ -72,7 +65,7 @@ class Runner {
     const config: ClientConfig = {
       entryPointAddress: this.entryPointAddress,
       bundlerUrl: this.bundlerUrl,
-      accountFacotry: ACCTOK_FACTORY,
+      accountFactory: ACCTOK_FACTORY,
       paymasterAPI
     }
     this.aaProvider = await wrapPaymasterProvider(this.provider, config, this.accountOwner, WETH, WETH_PAYMASTER)
